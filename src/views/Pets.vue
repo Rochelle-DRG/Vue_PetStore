@@ -9,22 +9,47 @@
 </template>
 
 <script>
-  import { Dogs } from "../data/dogs";
-  import Dog from "../components/Dog.vue";
-  export default {
-    components: {
-        appDog: Dog
-    }  ,
-    data() {
-      return {
-        dogs: Dogs
-      };
-    }
-   };
-  </script>
+import { Dogs } from "../data/dogs";
+import Dog from "../components/Dog.vue";
+import axios from "axios";
+axios.defaults.baseURL = "https://dog.ceo/api";
+
+export default {
+  components: {
+    appDog: Dog
+  },
+  data() {
+    return {
+      dogs: Dogs
+    };
+  }, //end data()
+  created() {
+    const linksArray = this.dogs.map(
+      dog => "/breed/" + dog.breed + "/images/random"
+    );
+    axios.all(linksArray.map(link => axios.get(link))).then(
+      axios.spread((...res) => {
+        this.dogs.forEach((dog, index) => {
+          dog.img = res[index].data.message;
+        });
+      })
+    );
+    axios
+      .get("/breed/husky/images/random")
+      .then(response => {
+        const husky = this.dogs.find(dog => dog.breed === "husky");
+        console.log(husky);
+        husky.img = response.data.message;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+};
+</script>
 
 <style scoped>
-  p {
-    margin: 0;
-  }
+p {
+  margin: 0;
+}
 </style>
