@@ -6,6 +6,7 @@
         <h3>{{dog.name}}</h3>
         <p class="breed">{{dog.breed}}</p>
       </div>
+      <v-btn @click="$emit('addToFavorites', dog)">Add to Favorites</v-btn>
     </v-card-title>
   </v-card>
 </template>
