@@ -15,14 +15,20 @@ export default new Vuex.Store({
       },
       removeFromFavorites(state, payload) {
         state.favorites.splice(state.favorites.indexOf(payload), 1);
+      },
+      clearFavorites(state) {
+        state.favorites = [];
       }
-     },
+     },//end mutations
      actions: {
       addToFavorites({ commit }, payload) {
         commit("addToFavorites", payload);
       },
       removeFromFavorites({ commit }, payload) {
         commit("removeFromFavorites", payload);
+      },
+      clearFavorites({commit}){
+        commit("clearFavorites")
       }
-    }
+    } //end actions
   });
